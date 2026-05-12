@@ -4,7 +4,6 @@ import ProductCard from './ProductCard'
 import { shopSphereProducts } from '../features/products/ProjectThunk'
 import { useDispatch, useSelector } from 'react-redux'
 
-
 const Home = () => {
     // const [products, setProducts] = useState([])
     // const allProducts = products
@@ -15,9 +14,7 @@ const Home = () => {
     const visibleProducts = allProducts.slice(0, visibleCount)
 
 
-
     useEffect(() => {
-
         dispatch(shopSphereProducts());
         const handleScroll = () => {
             if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
@@ -41,7 +38,7 @@ const Home = () => {
         return (
             <div className='h-screen flex justify-center items-center'>
                 <div
-                    className="p-3 animate-spin drop-shadow-2xl bg-gradient-to-bl from-pink-400 via-purple-400 to-indigo-600 md:w-48 md:h-48 h-32 w-32 aspect-square rounded-full"
+                    className="p-3 animate-spin drop-shadow-2xl bg-linear-to-bl from-pink-400 via-purple-400 to-indigo-600 md:w-48 md:h-48 h-32 w-32 aspect-square rounded-full"
                 >
                     <div
                         className="rounded-full h-full w-full bg-slate-100 dark:bg-zinc-900 background-blur-md"
@@ -56,7 +53,7 @@ const Home = () => {
     return (
         /* Main Container: Added max-width, centering, and background padding */
         <div className='min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8'>
-            <div className='max-w-[1400px] mx-auto'>
+            <div className='max-w-350 mx-auto'>
 
                 {/* Header for context */}
                 <h2 className='text-2xl font-bold text-gray-800 mb-6'>Recommended for You</h2>
