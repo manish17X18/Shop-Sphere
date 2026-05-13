@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { FaStar, FaRegStar } from "react-icons/fa";
 import { addToCart } from '../../features/cart/cartSlice';
@@ -9,6 +9,12 @@ import FilteredCategoryProducts from './FilteredCategoryProducts'
 const ProductDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+
+  //redirect the page to top of the page
+  useEffect(()=>{
+    window.scroll(0,0)
+  },[id]);
+
   const product = useSelector((state) =>
     state.fetchProducts.allProducts.find((item) => item.id === Number(id))
   );
