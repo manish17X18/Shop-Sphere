@@ -1,13 +1,19 @@
 import React from 'react'
 import { FaStar } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa";
+import { addToCart } from '../../features/cart/cartSlice';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
 const FilteredCategoryProducts = ({item}) => {
+    const dispatch=useDispatch();
+    function toCart(){
+        dispatch(addToCart(item))
+        toast.success(`${item.title} added to cart`)
+    }
   return (
     <div>
       <div className='group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col h-112.5 w-full max-w-[320px] mx-auto'>
-            
-            
             <div className='relative w-full h-48 bg-gray-50 flex items-center justify-center p-4 overflow-hidden'>
               <img 
                 src={item.thumbnail} 
@@ -52,7 +58,7 @@ const FilteredCategoryProducts = ({item}) => {
                   <span className='text-lg font-extrabold text-gray-900'>${item.price}</span>
                 </div>
                 
-                <button className='bg-purple-600 cursor-pointer hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-md text-xs transition-colors shadow-sm active:scale-95'>
+                <button onClick={toCart} className='bg-purple-600 cursor-pointer hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-md text-xs transition-colors shadow-sm active:scale-95'>
                   Add to Cart
                 </button>
               </div>
