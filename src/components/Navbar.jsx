@@ -2,12 +2,13 @@ import React from 'react'
 import { NavLink,Route,Routes } from 'react-router-dom'
 import logo from '../assets/logo.png'
 import Home from './Home'
-import Order from './Order'
-import Cart from './Cart'
+import Order from './cart/Order'
+import Cart from './cart/Cart'
 import { IoIosSearch } from "react-icons/io";
 import { FiShoppingCart } from "react-icons/fi";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { useSelector } from 'react-redux'
+import ProductDetails from './dynamic_routing/ProductDetails'
 
 const Navbar = () => {
     const CartItems=useSelector((state)=>state.cartProducts.cartStore)
@@ -81,6 +82,7 @@ const Navbar = () => {
         <Route path="/" element={<Home/>} />
         <Route path="/orders" element={<Order/>} />
         <Route path="/cart" element={<Cart/>} />
+        <Route path='/item/:id' element={<ProductDetails/>} />
       </Routes>
     </div>
   )
