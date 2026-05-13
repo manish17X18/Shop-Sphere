@@ -2,8 +2,8 @@ import React from 'react'
 import { NavLink,Route,Routes } from 'react-router-dom'
 import logo from '../assets/logo.png'
 import Home from './Home'
-import Order from './Order'
-import Cart from './Cart'
+import Order from '../components/cart/Order'
+import Cart from '../components/cart/Cart'
 import { IoIosSearch } from "react-icons/io";
 import { FiShoppingCart } from "react-icons/fi";
 import { HiOutlineLocationMarker } from "react-icons/hi";
