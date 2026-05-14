@@ -3,15 +3,27 @@ import ProductCard from './ProductCard'
 //import react thunk
 import { shopSphereProducts } from '../features/products/ProjectThunk'
 import { useDispatch, useSelector } from 'react-redux'
+import { useSearchParams } from 'react-router-dom'
 
-const Home = () => {
+const Home = ({filteredCategory,searchItem}) => {
     // const [products, setProducts] = useState([])
     // const allProducts = products
-
+    console.log(searchItem)
     const [visibleCount, setVisibleCount] = useState(20)
     const dispatch = useDispatch();
+    //importing all the products
     const { allProducts, loading, errors } = useSelector((state) => state.fetchProducts)
-    const visibleProducts = allProducts.slice(0, visibleCount)
+    //filtering products 
+    console.log(filteredCategory)
+    const filteredCategoryProductsNavBar=allProducts.filter((item)=>item.category.toLowerCase().includes(filteredCategory))
+    // const filteredCategoryProductsNavBar=allProducts.filter((item)=>item.category.toLowerCase()===filteredCategory)
+    
+    const visibleProducts = filteredCategoryProductsNavBar.length>0?
+    filteredCategoryProductsNavBar.slice(0,visibleCount)
+    :
+    allProducts.slice(0, visibleCount)
+    
+    
 
 
     useEffect(() => {
