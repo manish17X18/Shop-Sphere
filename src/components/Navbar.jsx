@@ -1,5 +1,5 @@
-import React from 'react'
-import { NavLink,Route,Routes } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { NavLink,Route,Routes, useSearchParams } from 'react-router-dom'
 import logo from '../assets/logo.png'
 import Home from './Home'
 import Order from './cart/Order'
@@ -11,7 +11,42 @@ import { useSelector } from 'react-redux'
 import ProductDetails from './dynamic_routing/ProductDetails'
 
 const Navbar = () => {
-    const CartItems=useSelector((state)=>state.cartProducts.cartStore)
+    const CartItems=useSelector((state)=>state.cartProducts.cartStore);
+    //filtering products, updating the link
+    const [search,setSearch]=useSearchParams();
+    //to select
+    const category=search.get('category')||"";
+    function changeHandler(e){
+        const val=e.target.value;
+        console.log(val);
+        setSearch((prev)=>{
+            const next=new URLSearchParams(prev);
+            if(val){
+                next.set('category',val)
+            }
+            else{
+                next.delete('category')
+            }
+            return next;
+        })
+    }
+
+    //to search by user
+    const searchItem=search.get('search')||"";
+    function searchChangeHandler(e){
+        const val=e.target.value;
+        // console.log(val)
+        setSearch((prev)=>{
+            const next=new URLSearchParams(prev);
+            if(val){
+                next.set('search',val)
+            }
+            else{
+                next.delete('search')
+            }
+            return next;
+        })
+    }
   return (
     <div > 
         <nav className='px-4 py-2 gap-x-8 bg-purple-500 shadow-md'>
@@ -30,28 +65,31 @@ const Navbar = () => {
                 </div>
                 {/* searchBar */}
                 <div className='flex justify-between w-[50%] items-center h-10 rounded-md bg-white group focus-within:ring-2 focus-within:ring-orange-400'>
-                    <select className='bg-gray-100 h-full w-[25%] text-gray-700 px-2 text-xs border-r cursor-pointer outline-none'>
-                        <option>All</option>
-                        <option>Beauty</option>
-                        <option>Fragrances</option>
-                        <option>Skin-Care</option>
-                        <option>Furniture</option>
-                        <option>Groceries</option>
-                        <option>Home-Decoration</option>
-                        <option>Kitchen-Accessories</option>
-                        <option>Laptops</option>
-                        <option>Mobiles</option>
-                        <option>Tablets</option>
-                        <option>Mens</option>
-                        <option>Womens</option>
-                        <option>Motor-Cycle</option>
-                        <option>Sports</option>
-                        <option>SunGlasses</option>
+                    <select onChange={changeHandler} value={category} className='bg-gray-100 h-full w-[25%] md:text-[10px] text-gray-700 px-2 text-xs border-r cursor-pointer outline-none'>
+                        <option value="">All</option>
+                        <option value="beauty">Beauty</option>
+                        <option value="fragrances">Fragrances</option>
+                        <option value="skin-care">Skin-Care</option>
+                        <option value="furniture">Furniture</option>
+                        <option value="groceries">Groceries</option>
+                        <option value="home-decoration">Home-Decoration</option>
+                        <option value="kitchen-accessories">Kitchen-Accessories</option>
+                        <option value="laptops">Laptops</option>
+                        <option value="smart-phones">Smart-Phones</option>
+                        <option value="tablets">Tablets</option>
+                        <option value="mens">Mens</option>
+                        <option value="womens">Womens</option>
+                        <option value="motor-cycle">Motor-Cycle</option>
+                        <option value="sports">Sports</option>
+                        <option value="sunglasses">SunGlasses</option>
+
                     </select>
                     <input 
                     type='text'
                     placeholder='Search ShopSphere.in'
                     className='w-[70%] h-full outline-none placeholder:px-4 text-sm '
+                    onChange={searchChangeHandler}
+                    value={searchItem}
                     />
                     <button className='inline  bg-orange-300 hover:bg-orange-400 h-full px-3 text-gray-800 transition-colors'>
                         <IoIosSearch size={24} />
@@ -79,7 +117,7 @@ const Navbar = () => {
             </div>
         </nav>
       <Routes>
-        <Route path="/" element={<Home/>} />
+        <Route path="/" element={<Home filteredCategory={category} searchItem={searchItem}/>} />
         <Route path="/orders" element={<Order/>} />
         <Route path="/cart" element={<Cart/>} />
         <Route path='/item/:id' element={<ProductDetails/>} />
