@@ -18,8 +18,11 @@ const Home = ({filteredCategory,searchItem}) => {
     const filteredCategoryProductsNavBar=allProducts.filter((item)=>item.category.toLowerCase().includes(filteredCategory))
     // const filteredCategoryProductsNavBar=allProducts.filter((item)=>item.category.toLowerCase()===filteredCategory)
     
-    const visibleProducts = filteredCategoryProductsNavBar.length>0?
-    filteredCategoryProductsNavBar.slice(0,visibleCount)
+    //filter according to user
+    const filteredSearchItem=filteredCategoryProductsNavBar.filter((item)=>item.title.toLowerCase().includes(searchItem.trim().toLowerCase()))
+
+    const visibleProducts = filteredSearchItem.length>0?
+    filteredSearchItem.slice(0,visibleCount)
     :
     allProducts.slice(0, visibleCount)
     
