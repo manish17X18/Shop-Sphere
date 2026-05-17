@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavLink,Route,Routes, useSearchParams } from 'react-router-dom'
 import logo from '../assets/logo.png'
 import Home from './Home'
@@ -14,6 +14,9 @@ const Navbar = () => {
     const CartItems=useSelector((state)=>state.cartProducts.cartStore);
     //filtering products, updating the link
     const [search,setSearch]=useSearchParams();
+    const [inputValue, setInputValue]=useState(
+        search.get('search')||""
+    );
     //to select
     const category=search.get('category')||"";
     function changeHandler(e){
@@ -34,21 +37,32 @@ const Navbar = () => {
     //to search by user
     const searchItem=search.get('search')||"";
     function searchChangeHandler(e){
-        const val=e.target.value;
-        // console.log(val)
+        // const val=e.target.value;
+        // // console.log(val)
+        // setSearch((prev)=>{
+        //     const next=new URLSearchParams(prev);
+        //     if(val){
+        //         next.set('search',val)
+        //     }
+        //     else{
+        //         next.delete('search')
+        //     }
+        //     return next;
+        // })
+        setInputValue(e.target.value)
+    }
+    function searchFilterHandler(e){
         setSearch((prev)=>{
             const next=new URLSearchParams(prev);
-            if(val){
-                next.set('search',val)
+            if(inputValue.trim()){
+                next.set('search',inputValue)
             }
-            else{
-                next.delete('search')
-            }
+            else next.delete('search');
             return next;
-        })
+        });
     }
   return (
-    <div > 
+    <div> 
         <nav className='px-4 py-2 gap-x-8 bg-purple-500 shadow-md'>
             <div className='flex items-center justify-between shrink-0'>
                 <div className='bg-white p-1 rounded-2xl'>
@@ -89,9 +103,9 @@ const Navbar = () => {
                     placeholder='Search ShopSphere.in'
                     className='w-[70%] h-full outline-none placeholder:px-4 text-sm '
                     onChange={searchChangeHandler}
-                    value={searchItem}
+                    value={inputValue}
                     />
-                    <button className='inline  bg-orange-300 hover:bg-orange-400 h-full px-3 text-gray-800 transition-colors'>
+                    <button onClick={searchFilterHandler} className='inline  bg-orange-300 hover:bg-orange-400 h-full px-3 text-gray-800 transition-colors'>
                         <IoIosSearch size={24} />
                     </button>
                 </div>
