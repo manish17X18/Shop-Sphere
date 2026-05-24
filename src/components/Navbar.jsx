@@ -9,6 +9,8 @@ import { FiShoppingCart } from "react-icons/fi";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { useSelector } from 'react-redux'
 import ProductDetails from './dynamic_routing/ProductDetails'
+import SignUpForm from '../userLogin/SignUpForm'
+import Login from '../userLogin/Login'
 
 const Navbar = () => {
     const CartItems=useSelector((state)=>state.cartProducts.cartStore);
@@ -61,6 +63,11 @@ const Navbar = () => {
             return next;
         });
     }
+
+    //take all the elements out from signUp to display in navbar
+    const {firstName,city,pinCode,PhNo,isLoggedin}=useSelector((state)=>state.signIn.loginData)
+    // console.log(firstName);
+
   return (
     <div> 
         <nav className='px-4 py-2 gap-x-8 bg-purple-500 shadow-md'>
@@ -71,10 +78,10 @@ const Navbar = () => {
                     </NavLink>
                 </div>
                 <div className='  text-xs leading-tight rounded '>                   
-                    <span className='text-sm text-white opacity-85'>Deliver to name?</span><br/>
+                    <span className='text-sm text-white opacity-85'>Deliver to {isLoggedin?firstName:'name?'}</span><br/>
                     <div className=''>
                         <HiOutlineLocationMarker size={20} className='inline text-white'/>
-                        <span className='font-semibold text-white'>Location? Pin?</span>                  
+                        <span className='font-semibold text-white'> {isLoggedin?`${city}-${pinCode}`:"Location? Pin?"} </span>                  
                     </div>
                 </div>
                 {/* searchBar */}
@@ -111,7 +118,7 @@ const Navbar = () => {
                 </div>
                 <div className='flex flex-col items-center leading-0.5'>
                     <span className='text-sm  text-white'>
-                        Hello, Phno?<br/>
+                        Hello, {isLoggedin?PhNo:"Phno?"}<br/>
                     </span>
                     <select className='text-sm text-white  border-r cursor-pointer outline-none'>
                         <option className='text-gray-900 '>Accounts & Lists</option>
@@ -135,6 +142,8 @@ const Navbar = () => {
         <Route path="/orders" element={<Order/>} />
         <Route path="/cart" element={<Cart/>} />
         <Route path='/item/:id' element={<ProductDetails/>} />
+        <Route path='/sign-up' element={<SignUpForm/>}/>
+        <Route path='/login' element={<Login/>} />
       </Routes>
     </div>
   )
