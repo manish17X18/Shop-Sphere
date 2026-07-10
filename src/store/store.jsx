@@ -6,6 +6,7 @@ export const store=configureStore({
     reducer:{
         fetchProducts:ProductThunk,
         cartProducts:CartStore,
-        signIn:SignUpUser
+        signIn:SignUpUser,
+        devTools:{trace:true}
     }
 })
