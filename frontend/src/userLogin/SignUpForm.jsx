@@ -4,7 +4,10 @@ import { useForm } from 'react-hook-form';
 import { addUser } from '../features/login/SignUp';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import Login from './Login';
+
+//have implemented the true and false for isLoggedin continue to update the navbar
 
 const SignUpForm = () => {
   const dispatch = useDispatch();
@@ -19,7 +22,8 @@ const SignUpForm = () => {
   } = useForm();
 
   async function submitHandler(data) {
-    await new Promise((resolve) => setTimeout(resolve, 3000)); // Shortened to 3s for snappier feedback
+    //after submitting the form wait for 3 sec so user can't click countionusly many times 
+    await new Promise((resolve) => setTimeout(resolve, 3000)); 
     dispatch(addUser(data));
     console.log("User added", data);
     toast.success("Successfully logged in!");
@@ -71,6 +75,24 @@ const SignUpForm = () => {
               />
               {errors.lastName && <span className='text-xs font-medium text-red-500 mt-0.5'>{errors.lastName.message}</span>}
             </div>
+          </div>
+
+          {/* Email Address Field */}
+          <div className='flex flex-col gap-1.5'>
+            <label className='text-sm font-medium text-gray-700'>Email Address</label>
+            <input 
+              type="email"
+              placeholder="you@example.com"
+              className={`w-full px-4 py-2.5 rounded-lg border bg-white text-gray-800 outline-none transition-all ${errors.email ? 'border-red-500 focus:ring-2 focus:ring-red-200' : 'border-gray-200 focus:border-purple-500 focus:ring-4 focus:ring-purple-100'}`}
+              {...register('email', {
+                required: "Email address is required",
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: "Invalid email address format"
+                }
+              })}
+            />
+            {errors.email && <span className='text-xs font-medium text-red-500 mt-0.5'>{errors.email.message}</span>}
           </div>
 
           {/* Phone Number */}
@@ -199,6 +221,11 @@ const SignUpForm = () => {
           </div>
 
         </form>
+        
+        <div className='w-full p-4 flex justify-center '>
+          Already have an Account?<NavLink to='/login'><span className='font-bold hover:text-purple-600'>Login In</span></NavLink> 
+        </div>
+        
       </div>
     </div>
   );

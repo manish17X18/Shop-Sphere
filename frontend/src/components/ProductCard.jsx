@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { FaStar } from "react-icons/fa";
 import { FaRegStar } from "react-icons/fa";
 import { addToCart } from '../features/cart/cartSlice'
-import { useDispatch } from 'react-redux'
+import { useDispatch,useSelector } from 'react-redux'
 import { toast } from 'react-toastify';
 import { FaRegArrowAltCircleRight } from "react-icons/fa";
 import { NavLink, useNavigate } from 'react-router-dom';
@@ -12,12 +12,23 @@ const ProductCard = ({ product }) => {
   const dispatch = useDispatch();
   const navigate=useNavigate();
 
+  //don't add to cart if they have not logged in or signed in
+  const {isLoggedin}=useSelector((state)=>state.signIn.loginData)
+
   function toCart() {
+    if(isLoggedin===false){
+      toast.error("Sign up to add to cart")
+      console.log("is this working")
+      return;
+    }
     dispatch(addToCart(product));
     console.log("added to cart")
     toast.success("Added to cart");
     return;
   }
+
+
+
   return (
     <div className='group bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col h-[450px] w-full max-w-[320px] mx-auto'>
 

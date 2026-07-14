@@ -9,6 +9,7 @@ import FilteredCategoryProducts from './FilteredCategoryProducts'
 const ProductDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const {isLoggedin}=useSelector((state)=>state.signIn.loginData)
 
   //redirect the page to top of the page
   useEffect(()=>{
@@ -32,6 +33,10 @@ const ProductDetails = () => {
   const filteredCategoryProducts=categoryProducts.filter((item)=>product.category===item.category)
 
   const toCart = () => {
+    if(!isLoggedin){
+      toast.warning("SignIn required")
+      return;
+    }
     dispatch(addToCart(product));
     toast.success(`${product.title} added to cart!`);
   };

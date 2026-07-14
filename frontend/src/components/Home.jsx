@@ -26,9 +26,8 @@ const Home = ({filteredCategory,searchItem}) => {
     :
     allProducts.slice(0, visibleCount)
     
+
     
-
-
     useEffect(() => {
         dispatch(shopSphereProducts());
         const handleScroll = () => {

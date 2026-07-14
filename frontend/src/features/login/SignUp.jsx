@@ -7,12 +7,14 @@ export const SignUpSlice=createSlice({
             firstName:"",
             lastName:"",
             PhNo:0,
+            email:"",
             password:"",
             confirmPassword:"",
             address:"",
             state:"",
             city:"",
             pinCode:0,
+            isLoggedin:false,
         }
     },
     currentUser:null,
@@ -20,10 +22,17 @@ export const SignUpSlice=createSlice({
     error:null,
     reducers:{
         addUser:(state,action)=>{
-            state.loginData=action.payload
+            state.loginData={
+                ...action.payload,
+                //updated the flag here only as taking to other files makes it mess
+                isLoggedin:true
+            }
+        },
+        signOut:(state,action)=>{
+            state.loginData.isLoggedin=false
         }
     }
 })
 
-export const {addUser}=SignUpSlice.actions;
+export const {addUser,signOut}=SignUpSlice.actions;
 export default SignUpSlice.reducer;

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { NavLink,Route,Routes, useSearchParams } from 'react-router-dom'
+import { Navigate, NavLink,Route,Routes, useSearchParams } from 'react-router-dom'
 import logo from '../assets/logo.png'
 import Home from './Home'
 import Order from './cart/Order'
 import Cart from './cart/Cart'
+import AccountDetails from '../userLogin/AccountDetails'
 import { IoIosSearch } from "react-icons/io";
 import { FiShoppingCart } from "react-icons/fi";
 import { HiOutlineLocationMarker } from "react-icons/hi";
@@ -11,6 +12,7 @@ import { useSelector } from 'react-redux'
 import ProductDetails from './dynamic_routing/ProductDetails'
 import SignUpForm from '../userLogin/SignUpForm'
 import Login from '../userLogin/Login'
+import { useNavigate } from 'react-router-dom'
 
 const Navbar = () => {
     const CartItems=useSelector((state)=>state.cartProducts.cartStore);
@@ -68,6 +70,21 @@ const Navbar = () => {
     const {firstName,city,pinCode,PhNo,isLoggedin}=useSelector((state)=>state.signIn.loginData)
     // console.log(firstName);
 
+    //if it is logged out go to signIn page
+    const navigate=useNavigate()
+    //for account and logout
+    function accountHandler(e){
+        const value=e.target.value
+        if(value==="account"){
+            if(isLoggedin===false){
+                navigate("/sign-up")
+            }
+            else{
+            navigate(`/account-details/${firstName}`)
+            }
+        }
+    }
+
   return (
     <div> 
         <nav className='px-4 py-2 gap-x-8 bg-purple-500 shadow-md'>
@@ -120,18 +137,17 @@ const Navbar = () => {
                     <span className='text-sm  text-white'>
                         Hello, {isLoggedin?PhNo:"Phno?"}<br/>
                     </span>
-                    <select className='text-sm text-white  border-r cursor-pointer outline-none'>
-                        <option className='text-gray-900 '>Accounts & Lists</option>
-                        <option className='text-gray-900 '>Your Account</option>
-                        <option className='text-gray-900 '>SignOut</option>
+                    <select onChange={accountHandler} className='text-sm text-white  border-r cursor-pointer outline-none'>
+                        <option value="" className='text-gray-900 '>Accounts & Lists</option>
+                        <option value="account" className='text-gray-900 '>Your Account</option>
                     </select>
                     
                 </div>
                 <div className='flex gap-x-4'>
                     <NavLink to="/orders" className="hidden md:flex flex-col justify-center items-center px-3 py-1 rounded-sm border border-transparent hover:text-white hover:border-white hover:translate-y-[-4px] hover:shadow-amber-200 transition-all duration-300">Orders</NavLink>
                     <NavLink to="/cart" className='relative'>
-                        <FiShoppingCart size={33} className='inline'/>
-                        <span className='absolute right-8.5 top-2 text-xs text-orange-400 animate-bounce'>{CartItems.length}</span>
+                        <FiShoppingCart size={35} className='inline'/>
+                        <span className='absolute right-9.5 top-2 text-xs  text-orange-400 '>{CartItems.length}</span>
                         <span>Cart</span>
                     </NavLink>
                 </div>
@@ -144,6 +160,7 @@ const Navbar = () => {
         <Route path='/item/:id' element={<ProductDetails/>} />
         <Route path='/sign-up' element={<SignUpForm/>}/>
         <Route path='/login' element={<Login/>} />
+        <Route path='/account-details/:name' element={<AccountDetails/>}/>
       </Routes>
     </div>
   )
